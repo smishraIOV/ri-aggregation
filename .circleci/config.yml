@@ -14,7 +14,7 @@ jobs:
           command: |
             docker-compose -f docker-compose-runner.yml down
             docker-compose -f docker-compose-runner.yml up --build -d zk
-            ci_run sccache --start-server
+            sccache --start-server
       - run:
           name: setup-env
           command: |
@@ -23,9 +23,9 @@ jobs:
       - run:
           name: lints
           command: |
-            ci_run zk
-            ci_run zk fmt --check
-            ci_run zk lint --check
+            zk
+            zk fmt --check
+            zk lint --check
 
 workflows:
     commit:
