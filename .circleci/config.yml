@@ -1,27 +1,9 @@
-version: 2.1
-parameters:
-    repo:
-        type: string
-        default: "rsksmart/rskj.git"
-    version:
-        type: string
-        default: ""
-    branch:
-        type: string
-        default: "master"
-    slack_channel:
-        type: string
-        default: "integration-tests"
-orbs:
-  slack: circleci/slack@4.1
-  
+version: 2.1  
 jobs:
-
   lint:
     docker:
       # specify the version you desire here
       - image: cimg/openjdk:8.0-node
-
     working_directory: ~/tmp
     steps:
       - checkout
