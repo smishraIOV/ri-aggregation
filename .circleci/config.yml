@@ -8,11 +8,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: setup-env
-          command: |
-            echo ZKSYNC_HOME=$(pwd) >> $GITHUB_ENV
-            echo $(pwd)/bin >> $GITHUB_PATH
-      - run:
           name: start-services
           command: |
             docker-compose -f docker-compose-runner.yml down
