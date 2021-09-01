@@ -6,6 +6,8 @@ jobs:
       - image: cimg/openjdk:8.0-node
     working_directory: ~/tmp
     steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
       - checkout
       - run:
           name: start-services
