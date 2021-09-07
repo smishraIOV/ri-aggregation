@@ -48,18 +48,35 @@ async function deployToken(token: TokenDescription): Promise<Token> {
         [token.name, token.symbol, token.decimals],
         { gasLimit: 5000000 }
     );
+    //Wait for contract deployment TX to be mined. The following WILL BLOCK execution until no. of confirmations is met
+    //use this together with tx.wait() keep the accountSlots / nonce mismatch within 5
+    //TODO (rsk): handle error on timeout here or not use a timeout at all?
+    //let rcptWait = await provider.waitForTransaction(erc20.deployTransaction.hash, 1, 10);
+
+    // or not use a timeout at all. Just block execution (no time out) until token is deployed.
+    let rcptWait = await provider.waitForTransaction(erc20.deployTransaction.hash, 1);
+
+    // WARNING! this console log is for testing only... should be commented out or removed (cause json errors).
+    // The only console output should be the Token info returned from each deployment
+    // which are written to etc/tokens/localhost.json (See run.deployERC20('dev'))
+    //console.log(rcptWait);
+
+    // now we premine to allocate token balances to some accounts
+    // wait for 1 confirmation after a set of 3 TXs so as to keep nonce increase within 5
 
     await erc20.mint(wallet.address, parseEther('3000000000'));
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow_privK, 'hex'), provider);
     await erc20.mint(wallet.address, parseEther('3000000000'));
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow2_privK, 'hex'), provider);
-    await erc20.mint(wallet.address, parseEther('3000000000'));
+    let tx = await erc20.mint(wallet.address, parseEther('3000000000'));
+    await tx.wait(1);
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow3_privK, 'hex'), provider);
     await erc20.mint(wallet.address, parseEther('3000000000'));
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow4_privK, 'hex'), provider);
     await erc20.mint(wallet.address, parseEther('3000000000'));
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow5_privK, 'hex'), provider);
-    await erc20.mint(wallet.address, parseEther('3000000000'));
+    tx = await erc20.mint(wallet.address, parseEther('3000000000'));
+    await tx.wait(1);
     // wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow6_privK, 'hex'), provider);
     // await erc20.mint(wallet.address, parseEther('3000000000'));
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow7_privK, 'hex'), provider);
@@ -67,7 +84,8 @@ async function deployToken(token: TokenDescription): Promise<Token> {
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow8_privK, 'hex'), provider);
     await erc20.mint(wallet.address, parseEther('3000000000'));
     wallet = new Wallet(Buffer.from(ethTestConfig.account_with_rbtc_cow9_privK, 'hex'), provider);
-    await erc20.mint(wallet.address, parseEther('3000000000'));
+    tx = await erc20.mint(wallet.address, parseEther('3000000000'));
+    await tx.wait(1);
 
     //for (let i = 0; i < 10; ++i) {
     //const testWallet = Wallet.fromMnemonic(ethTestConfig.test_mnemonic as string, "m/44'/137'/0'/0/" + i).connect(
