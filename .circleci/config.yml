@@ -10,6 +10,12 @@ jobs:
           docker_layer_caching: true
       - checkout
       - run:
+          name: Install sccache
+          command: |
+            sudo apt update
+            sudo apt install snapd
+            sudo snap install sccache --candidate
+      - run:
           name: start-services
           command: |
             docker-compose -f docker-compose-runner.yml down
