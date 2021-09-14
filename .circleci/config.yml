@@ -31,7 +31,6 @@ jobs:
   lint:
     docker:
       # specify the version you desire here
-      - image: cimg/openjdk:8.0-node
       - image: cimg/rust:1.55.0
 
     working_directory: ~/tmp
