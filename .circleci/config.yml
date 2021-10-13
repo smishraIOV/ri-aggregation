@@ -9,6 +9,7 @@ commands:
             sudo wget https://www.openssl.org/source/openssl-1.1.1k.tar.gz
             sudo tar -xzf openssl-1.1.1k.tar.gz
             rm openssl*.tar.gz
+            ls
             cd openssl*
             sudo chmod +x ./config
             sudo ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib
