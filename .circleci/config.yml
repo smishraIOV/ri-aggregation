@@ -13,6 +13,7 @@ commands:
             cd openssl-1.1.1k
             sudo chmod +x ./config
             sudo ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib
+            export OPENSSL_DIR='/usr/local/ssl'
             cargo install sccache
             # This configures Rust to use sccache.
             echo 'export "RUSTC_WRAPPER"="sccache"' >> $BASH_ENV
