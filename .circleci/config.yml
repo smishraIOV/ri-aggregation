@@ -5,7 +5,13 @@ commands:
       - run:
           name: Install sccache
           command: |
-            apk add openssl
+            cd /usr/local/src/
+            sudo wget https://www.openssl.org/source/openssl-1.1.1k.tar.gz
+            sudo tar -xzf openssl-1.1.1k.tar.gz
+            rm openssl*.tar.gz
+            cd openssl*
+            sudo chmod +x ./config
+            sudo ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib
             cargo install sccache
             # This configures Rust to use sccache.
             echo 'export "RUSTC_WRAPPER"="sccache"' >> $BASH_ENV
