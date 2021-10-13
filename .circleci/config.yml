@@ -11,6 +11,8 @@ commands:
             ls
             sudo rm openssl-1.1.1k.tar.gz -f
             cd openssl-1.1.1k
+            pwd
+            ls
             sudo chmod +x ./config
             sudo ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib
             export OPENSSL_DIR='/usr/local/ssl'
