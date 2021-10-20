@@ -4,12 +4,15 @@ on:
   push:
     branches:
     - master
+    - rsk_port_initial
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: rsk_port_initial
 
       - name: setup-env
         run: |
@@ -38,6 +41,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: rsk_port_initial
 
       - name: setup-env
         run: |
