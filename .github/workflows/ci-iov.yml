@@ -53,7 +53,7 @@ jobs:
         run: |
           docker-compose -f docker-compose-runner.yml down
           docker-compose -f docker-compose-runner.yml pull
-          docker-compose -f docker-compose-runner.yml up --build -d geth postgres zk
+          docker-compose -f docker-compose-runner.yml up --build -d postgres zk
           ci_run sccache --start-server
 
       - name: init
