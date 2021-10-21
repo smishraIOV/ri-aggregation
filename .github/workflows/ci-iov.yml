@@ -3,7 +3,6 @@ name: ri-aggregation CI
 on:
   push:
     branches:
-    - master
     - rsk_port_initial
 
 jobs:
