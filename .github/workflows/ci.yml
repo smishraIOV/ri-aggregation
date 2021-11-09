@@ -53,9 +53,9 @@ jobs:
         run: |
           docker-compose -f docker-compose-runner.yml down
           docker-compose -f docker-compose-runner.yml pull
-          docker-compose -f docker-compose-runner.yml up --build -d postgres zk rskj
+          docker-compose -f docker-compose-runner.yml up --build 
           ci_run sccache --start-server
-
+#-d postgres zk rskj
       - name: init
         run: |
           ci_run ln -s /usr/src/keys/setup keys/setup
