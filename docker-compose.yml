@@ -14,8 +14,8 @@ services:
     build:
       context: docker/rskj
     expose:
-      - 4444
-      - 4445
+      - 8545
+      - 8546
     volumes:
     - type: bind
       source: ./volumes/rskj

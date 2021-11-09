@@ -28,8 +28,8 @@ RUN \
 # Supervisod CONF
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 4444
-EXPOSE 4445
+EXPOSE 8545
+EXPOSE 8546
 
 # Define default command.
 CMD ["/usr/bin/supervisord"]
