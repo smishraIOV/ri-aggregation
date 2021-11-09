@@ -10,14 +10,16 @@ services:
       target: /var/lib/postgresql/data
     environment:
         - POSTGRES_HOST_AUTH_METHOD=trust
-  
-  #rskj:
-    #container_name: rskj
-    #image: rskj:latest
-    #command: --regtest
-    #ports:
-    #  - "4445:4445"
-  
+  geth:
+    build:
+      context: docker/rskj
+    expose:
+      - 4444
+      - 4445
+    volumes:
+    - type: bind
+      source: ./volumes/rskj
+      target: /var/lib/rsk
   dev-liquidity-token-watcher:
     image: "matterlabs/dev-liquidity-token-watcher:latest"
     env_file:
