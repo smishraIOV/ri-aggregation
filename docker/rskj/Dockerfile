@@ -5,7 +5,6 @@
 # Pull base image.
 FROM ubuntu:latest
 
-LABEL maintainer="RSK Release <support@rsk.co>"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
