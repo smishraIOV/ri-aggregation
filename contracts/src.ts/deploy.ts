@@ -147,7 +147,7 @@ export class Deployer {
             console.log('Deploying verifier target');
         }
         const verifierContract = await deployContract(this.deployWallet, this.contracts.verifier, [], {
-            gasLimit: 8000000,
+            gasLimit: 6800000,
             ...ethTxOptions
         });
         const verRec = await verifierContract.deployTransaction.wait();
@@ -172,7 +172,7 @@ export class Deployer {
             console.log('Deploying zkSync target');
         }
         const zksContract = await deployContract(this.deployWallet, this.contracts.zkSync, [], {
-            gasLimit: 6000000,
+            gasLimit: 6800000,
             ...ethTxOptions
         });
         const zksRec = await zksContract.deployTransaction.wait();
@@ -206,7 +206,7 @@ export class Deployer {
                 this.governorAddress,
                 process.env.CHAIN_STATE_KEEPER_FEE_ACCOUNT_ADDR
             ],
-            { gasLimit: 6000000, ...ethTxOptions }
+            { gasLimit: 6800000, ...ethTxOptions }
         );
         const deployFactoryTx = await deployFactoryContract.deployTransaction.wait();
         const deployFactoryInterface = new Interface(this.deployFactoryCode.abi);
@@ -253,7 +253,7 @@ export class Deployer {
             this.contracts.nftFactory,
             [name, symbol, this.addresses.ZkSync],
             {
-                gasLimit: 6000000,
+                gasLimit: 6800000,
                 ...ethTxOptions
             }
         );
@@ -291,7 +291,7 @@ export class Deployer {
             this.contracts.tokenGovernance,
             [governance, listingFeeToken, listingFee, listingCap, treasury],
             {
-                gasLimit: 6000000,
+                gasLimit: 6800000,
                 ...ethTxOptions
             }
         );
@@ -327,7 +327,7 @@ export class Deployer {
             this.contracts.forcedExit,
             [this.deployWallet.address, receiver],
             {
-                gasLimit: 8000000,
+                gasLimit: 6800000,
                 ...ethTxOptions
             }
         );
@@ -354,7 +354,7 @@ export class Deployer {
         }
 
         const additionalZkSyncContract = await deployContract(this.deployWallet, this.contracts.additionalZkSync, [], {
-            gasLimit: 6000000,
+            gasLimit: 6800000,
             ...ethTxOptions
         });
         const zksRec = await additionalZkSyncContract.deployTransaction.wait();
@@ -384,7 +384,7 @@ export class Deployer {
             this.contracts.regenesisMultisig,
             [process.env.MISC_REGENESIS_THRESHOLD],
             {
-                gasLimit: 6000000,
+                gasLimit: 6800000,
                 ...ethTxOptions
             }
         );

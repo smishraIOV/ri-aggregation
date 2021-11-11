@@ -18,6 +18,7 @@ vlog = { path = "../../lib/vlog", version = "1.0" }
 
 serde = "1.0.90"
 ethabi = "14.0.0"
+sha3 = "0.9.1"
 web3 = "0.16.0"
 parity-crypto = {version = "0.8", features = ["publickey"] }
 hex = "0.4"
