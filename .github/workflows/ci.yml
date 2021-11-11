@@ -78,3 +78,4 @@ jobs:
 
       - name: rust-unit-tests
         run: ci_run zk test server-rust
+        

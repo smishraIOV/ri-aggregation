@@ -4,6 +4,8 @@ on:
   push:
     branches:
     - rsk_port_initial
+    - ci_setup
+    - master
 
 jobs:
   lint:
@@ -52,9 +54,9 @@ jobs:
         run: |
           docker-compose -f docker-compose-runner.yml down
           docker-compose -f docker-compose-runner.yml pull
-          docker-compose -f docker-compose-runner.yml up --build -d postgres zk
+          docker-compose -f docker-compose-runner.yml up --build -d postgres rskj zk 
           ci_run sccache --start-server
-
+ 
       - name: init
         run: |
           ci_run ln -s /usr/src/keys/setup keys/setup
@@ -77,3 +79,4 @@ jobs:
 
       - name: rust-unit-tests
         run: ci_run zk test server-rust
+        
