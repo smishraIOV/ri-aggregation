@@ -10,7 +10,7 @@ services:
       context: ./docker/rskj
     environment:
       - PLUGIN_CONFIG
-
+  
   dev-ticker:
     image: "matterlabs/dev-ticker:latest"
     volumes:
@@ -24,7 +24,8 @@ services:
       - ./etc/tokens/:/etc/tokens
 
   zk:
-    image: "matterlabs/zk-environment:latest"
+    build:
+      context: ./docker/zk-environment 
     depends_on:
       - postgres
       - rskj

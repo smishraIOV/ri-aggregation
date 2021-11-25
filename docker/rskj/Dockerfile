@@ -1,15 +1,10 @@
-#
-# RSK Node Dockerfile
-#
-
 # Pull base image.
-FROM ubuntu:latest
-
+FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends openjdk-8-jre supervisor systemd software-properties-common
+RUN apt-get install -y --no-install-recommends openjdk-11-jre supervisor systemd software-properties-common
 
 # Install RSK.
 RUN groupadd --gid 888 rsk && useradd rsk -d /var/lib/rsk -s /sbin/nologin --uid=888 --gid=888
@@ -21,14 +16,18 @@ RUN \
   apt-get install -y --no-install-recommends rskj && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
-  rm -f /etc/rsk/node.conf && \
-  ln -s /etc/rsk/regtest.conf /etc/rsk/node.conf
+  rm -f /etc/rsk/node.conf 
+
+RUN mkdir /var/lib/rsk/database && \
+  chown rsk:rsk /var/lib/rsk/database
 
 # Supervisod CONF
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY node.conf /etc/rsk/node.conf
+COPY logback.xml /etc/rsk/logback.xml
 
-EXPOSE 8545
-EXPOSE 8546
+EXPOSE 4444
+EXPOSE 50505
 
 # Define default command.
 CMD ["/usr/bin/supervisord"]

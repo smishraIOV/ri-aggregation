@@ -2,59 +2,29 @@ name: ri-aggregation CI
 on:
   push:
     branches:
-    - ci_setup
     - master
 
 jobs:
-  linting:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: master
-
-      - name: setup-env
-        run: |
-          echo ZKSYNC_HOME=$(pwd) >> $GITHUB_ENV
-          echo $(pwd)/bin >> $GITHUB_PATH
-
-      - name: start-services
-        run: |
-          docker-compose -f docker-compose-runner.yml down
-          docker-compose -f docker-compose-runner.yml up --build -d zk
-          ci_run sccache --start-server
-
-      - name: setup-env
-        run: |
-          echo ZKSYNC_HOME=$(pwd) >> $GITHUB_ENV
-          echo $(pwd)/bin >> $GITHUB_PATH
-
-      - name: lints
-        run: |
-          ci_run zk
-          ci_run zk fmt --check
-          # ci_run zk lint --check
-
   unit-tests:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
         with:
           ref: master
-
-      - name: setup-env
-        run: |
-          echo ZKSYNC_HOME=$(pwd) >> $GITHUB_ENV
-          echo $(pwd)/bin >> $GITHUB_PATH
         
       - name: start-services
         run: |
           docker-compose -f docker-compose-runner.yml down
           docker-compose -f docker-compose-runner.yml pull
-          docker-compose -f docker-compose-runner.yml up --build -d postgres rskj zk 
-          ci_run sccache --start-server
- 
+          docker-compose -f docker-compose-runner.yml up --build -d rskj postgres zk 
+          ci_run sccache --start-server &
+          docker-compose -f docker-compose-runner.yml ps -a
+      
+      - name: setup-env
+        run: |
+          echo ZKSYNC_HOME=$(pwd) >> $GITHUB_ENV
+          echo $(pwd)/bin >> $GITHUB_PATH
+      
       - name: init
         run: |
           ci_run ln -s /usr/src/keys/setup keys/setup
@@ -63,8 +33,11 @@ jobs:
           ci_run zk contract build
           ci_run zk db basic-setup
           ci_run zk run yarn
-          # ci_run zk run deploy-erc20 dev
-          # ci_run zk run deploy-eip1271
+
+      - name: run-contract-tests
+        run: |
+          ci_rskj_run zk run deploy-erc20 dev
+          ci_rskj_run zk run deploy-eip1271
 
       - name: restart dev-liquidity-token-watcher and dev-ticker
         run: docker-compose -f docker-compose-runner.yml restart dev-liquidity-token-watcher dev-ticker
