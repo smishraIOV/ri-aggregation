@@ -20,10 +20,10 @@ jobs:
           docker-compose -f docker-compose-runner.yml up --build -d rskj postgres zk 
           ci_run sccache --start-server &
           docker-compose -f docker-compose-runner.yml ps -a
-          docker-compose -f docker-compose-runner.yml stop rskj
-          docker-compose -f docker-compose-runner.yml rm rskj
-          docker-compose -f docker-compose-runner.yml run -d -p 4444:4444 -p 4445:4445 --name rskj rskj  
-          sleep 10s
+          #docker-compose -f docker-compose-runner.yml stop rskj
+          #docker-compose -f docker-compose-runner.yml rm rskj
+          #docker-compose -f docker-compose-runner.yml run -d -p 4444:4444 -p 4445:4445 --name rskj rskj  
+          #sleep 10s
           curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
               
       - name: setup-env
