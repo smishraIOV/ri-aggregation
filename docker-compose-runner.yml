@@ -34,7 +34,7 @@ services:
       - /usr/src/cache:/usr/src/cache
       - /usr/src/keys:/usr/src/keys
     environment:
-      - IN_DOCKER=true
+      - IN_DOCKER=false
       - CACHE_DIR=/usr/src/cache
       - SCCACHE_CACHE_SIZE=50g
       - CI=1
