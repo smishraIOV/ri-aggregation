@@ -3,7 +3,7 @@ on:
   push:
     branches:
     - master
-  workflow_dispatch:
+  #workflow_dispatch:
   
 jobs:
   unit-tests:
@@ -17,17 +17,26 @@ jobs:
         run: |
           docker-compose -f docker-compose-runner.yml down
           docker-compose -f docker-compose-runner.yml pull
-          docker-compose -f docker-compose-runner.yml build rskj
-          docker run -d -p 4444:4444 -p 4445:4445 --name rskj ri-aggregation_rskj:latest
-          echo 'Started rskj and test RPC after 10 seconds'
-          sleep 10s
-          curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'  
+          #docker-compose -f docker-compose-runner.yml build rskj
+          #docker run -d -p 4444:4444 -p 4445:4445 --name rskj ri-aggregation_rskj:latest
+          #echo 'Started rskj and test RPC after 10 seconds'
+          #sleep 10s
+          #curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'  
       
       - name: continue-starting-services    
         run: |  
-          docker-compose -f docker-compose-runner.yml up --build -d postgres zk 
+          docker-compose -f docker-compose-runner.yml up --build -d rskj postgres zk 
           ci_run sccache --start-server &
           docker-compose -f docker-compose-runner.yml ps -a
+          
+          #remove the rskj container and launch a new one manually
+          docker stop ri-aggregation_rskj_1
+          docker rm ri-aggregation_rskj_1
+          docker run -d -p 4444:4444 -p 4445:4445 --name rskj ri-aggregation_rskj:latest
+          echo 'Started rskj manually. Test RPC after 10 seconds'
+          sleep 10s
+          curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'  
+
       
       - name: setup-env
         run: |
@@ -51,11 +60,11 @@ jobs:
       - name: restart dev-liquidity-token-watcher and dev-ticker
         run: docker-compose -f docker-compose-runner.yml restart dev-liquidity-token-watcher dev-ticker
 
-      #- name: contracts-unit-tests
-      #  run: ci_run zk test contracts
+      - name: contracts-unit-tests
+        run: ci_run zk test contracts
 
-      #- name: js-unit-tests
-      #  run: ci_run zk test js
+      - name: js-unit-tests
+        run: ci_run zk test js
 
       #- name: rust-unit-tests
       #  run: ci_run zk test server-rust
