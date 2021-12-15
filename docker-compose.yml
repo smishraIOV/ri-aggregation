@@ -11,16 +11,15 @@ services:
     environment:
         - POSTGRES_HOST_AUTH_METHOD=trust
   rskj:
-    build:
-      dockerfile: Dockerfile
-      context: ./docker/rskj
+    image: "optimalbrew/iris:raul1"
     ports:
-      - "4445:4445"
       - "4444:4444"
+      - "4445:4445"
     volumes:
       - type: bind
         source: ./volumes/rskj
-        target: /var/lib/rsk
+        target: /etc/rsknode
+  
   dev-liquidity-token-watcher:
     image: "matterlabs/dev-liquidity-token-watcher:latest"
     env_file:
