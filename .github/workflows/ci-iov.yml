@@ -19,7 +19,8 @@ jobs:
           docker-compose -f docker-compose-runner.yml pull
           docker-compose -f docker-compose-runner.yml build rskj
           docker run -d -p 4444:4444 -p 4445:4445 --name rskj ri-aggregation_rskj:latest
-          echo 'Started rskj and test RPC'
+          echo 'Started rskj and test RPC after 10 seconds'
+          sleep 10s
           curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'  
       
       - name: continue-starting-services    
