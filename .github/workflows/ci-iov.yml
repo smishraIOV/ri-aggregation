@@ -22,7 +22,7 @@ jobs:
           docker-compose -f docker-compose-runner.yml ps -a
           docker-compose -f docker-compose-runner.yml stop rskj
           docker-compose -f docker-compose-runner.yml rm rskj
-          docker-compose -f docker-compose-runner.yml run -d -p 4444:4444 -p 4445:4445 rskj  
+          docker-compose -f docker-compose-runner.yml run -d -p 4444:4444 -p 4445:4445 --name rskj rskj  
           sleep 10s
           curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
               
@@ -42,8 +42,9 @@ jobs:
 
       - name: run-contract-tests
         run: |
-          ci_rskj_run zk run deploy-erc20 dev
-          ci_rskj_run zk run deploy-eip1271
+          curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+          ci_run zk run deploy-erc20 dev
+          ci_run zk run deploy-eip1271
 
       - name: restart dev-liquidity-token-watcher and dev-ticker
         run: docker-compose -f docker-compose-runner.yml restart dev-liquidity-token-watcher dev-ticker
