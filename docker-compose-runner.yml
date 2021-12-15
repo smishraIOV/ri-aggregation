@@ -6,10 +6,7 @@ services:
         - POSTGRES_HOST_AUTH_METHOD=trust
 
   rskj:
-    build:
-      context: ./docker/rskj
-    environment:
-      - PLUGIN_CONFIG
+    image: "optimalbrew/iris:raul1"
   
   dev-ticker:
     image: "matterlabs/dev-ticker:latest"
