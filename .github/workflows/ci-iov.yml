@@ -28,13 +28,12 @@ jobs:
           docker-compose -f docker-compose-runner.yml up -d rskj postgres zk 
           ci_run sccache --start-server &
           docker-compose -f docker-compose-runner.yml ps -a
-          
           #remove the rskj container and launch a new one manually
-          ci_run docker stop ri-aggregation_rskj_1
-          ci_run docker rm ri-aggregation_rskj_1
-          ci_run docker run -d -p 4444:4444 -p 4445:4445 --name rskj ri-aggregation_rskj:latest
-          ci_run echo 'Started rskj manually. Test RPC after 5 seconds'
-          ci_run sleep 5s
+          #ci_run docker stop ri-aggregation_rskj_1
+          #ci_run docker rm ri-aggregation_rskj_1
+          #ci_run docker run -d -p 4444:4444 -p 4445:4445 --name rskj ri-aggregation_rskj:latest
+          #ci_run echo 'Started rskj manually. Test RPC after 5 seconds'
+          #ci_run sleep 5s
           ci_run curl http://localhost:4444 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'  
 
       
