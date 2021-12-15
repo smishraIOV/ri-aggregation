@@ -106,7 +106,7 @@ export default {
     },
     networks: {
         env: {
-            url: process.env.ETH_CLIENT_WEB3_URL?.split(',')[0],
+            url: "http://localhost:4444",
             chainId: 33
         },
         hardhat: {
