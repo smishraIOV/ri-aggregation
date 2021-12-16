@@ -5,6 +5,7 @@ services:
     environment:
         - POSTGRES_HOST_AUTH_METHOD=trust
 
+  #ports will not be visible to zk container so this is just to build the image
   rskj:
     build:
       context: ./docker/rskj
@@ -42,4 +43,4 @@ services:
       - CACHE_DIR=/usr/src/cache
       - SCCACHE_CACHE_SIZE=50g
       - CI=1
-    network_mode : "host"
+    #network_mode : "host" #container uses docker env for network
