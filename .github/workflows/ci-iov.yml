@@ -34,14 +34,21 @@ jobs:
           ci_run zk contract build
           ci_run zk db basic-setup
           ci_run zk run yarn
+                
+      - name: shift to host network
+        run: |
+          #remove containers (host will retain build)
+          docker-compose -f docker-compose-runner.yml down
+          #start containers with ports binded and zk on host network
+          docker-compose -f docker-compose-runner2.yml up -d rskj postgres zk
 
-      - name: run-contract-tests
+      - name: deploy contracts
         run: |
           ci_run zk run deploy-erc20 dev
           ci_run zk run deploy-eip1271
 
       - name: restart dev-liquidity-token-watcher and dev-ticker
-        run: docker-compose -f docker-compose-runner.yml restart dev-liquidity-token-watcher dev-ticker
+        run: docker-compose -f docker-compose-runner2.yml restart dev-liquidity-token-watcher dev-ticker
 
       - name: contracts-unit-tests
         run: ci_run zk test contracts
